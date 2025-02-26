@@ -25,8 +25,23 @@ export namespace Components {
         "middle": string;
     }
 }
+export interface CounterComponentCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCounterComponentElement;
+}
 declare global {
+    interface HTMLCounterComponentElementEventMap {
+        "didReset": boolean;
+    }
     interface HTMLCounterComponentElement extends Components.CounterComponent, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCounterComponentElementEventMap>(type: K, listener: (this: HTMLCounterComponentElement, ev: CounterComponentCustomEvent<HTMLCounterComponentElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCounterComponentElementEventMap>(type: K, listener: (this: HTMLCounterComponentElement, ev: CounterComponentCustomEvent<HTMLCounterComponentElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCounterComponentElement: {
         prototype: HTMLCounterComponentElement;
@@ -47,6 +62,7 @@ declare namespace LocalJSX {
     interface CounterComponent {
         "btntext"?: string;
         "color"?: string;
+        "onDidReset"?: (event: CounterComponentCustomEvent<boolean>) => void;
     }
     interface MyComponent {
         /**
